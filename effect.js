@@ -26,6 +26,7 @@ $('document').ready(function () {
 		$('#bulb_pink').addClass('bulb-glow-pink');
 		$('#bulb_orange').addClass('bulb-glow-orange');
 		$('body').addClass('peach');
+		$("#pauseMusic").css('display', 'inline-block');
 		$(this).fadeOut('slow').delay(5000).promise().done(function () {
 			$('#play').fadeIn('slow');
 		});
@@ -209,6 +210,10 @@ $('document').ready(function () {
 				prettyLog('onBegin ' + self);
 			},
 			onComplete: function (self) {
+				$('#container-1').css('display', 'none');
+				$('#playMusic').css('display', 'none');
+				$('#pauseMusic').css('display', 'none');
+				addImageToCollage();
 				prettyLog('onComplete ' + self);
 			},
 			preStringTyped: function (pos, self) {
@@ -283,7 +288,6 @@ $('document').ready(function () {
 		{ src: "./img/1.jpg" },
 		{ src: "./img/2.jpg" },
 		{ src: "./img/3.jpg" },
-		{ src: "./img/4.jpg" },
 		{ src: "./img/5.jpg" },
 		{ src: "./img/6.jpg" },
 		{ src: "./img/7.jpg" },
@@ -296,7 +300,6 @@ $('document').ready(function () {
 		{ src: "./img/14.png" },
 		{ src: "./img/15.jpg" },
 		{ src: "./img/16.jpg" },
-		{ src: "./img/17.jpg" },
 		{ src: "./img/18.jpg" },
 		{ src: "./img/19.png" },
 		// { src: "./img/received_317779920284992.mp4" },
@@ -306,10 +309,10 @@ $('document').ready(function () {
 	];
 
 	// Keep track of which image to add next
-	let currentIndex = 0;
+	// let currentIndex = 0;
 
 	// Select the collage container from your HTML
-	const collageContainer = document.querySelector(".collage");
+	// const collageContainer = document.querySelector(".collage");
 
 	// Function to return a random position while keeping a margin of 20px from all sides
 	// function getRandomPosition(itemWidth, itemHeight) {
@@ -437,50 +440,50 @@ $('document').ready(function () {
 	}
 
 	// Function to add images in non-overlapping positions
-	function addImageToCollage() {
-		console.log("hii")
-		if (currentIndex < images.length) {
-			const imageItem = images[currentIndex];
+	// function addImageToCollage() {
+	// 	console.log("hii")
+	// 	if (currentIndex < images.length) {
+	// 		const imageItem = images[currentIndex];
 
-			// Create a new collage item element
-			const collageItem = document.createElement("div");
-			collageItem.className = "collage-item";
-			collageItem.style.position = "absolute"; // Ensure positioning works
+	// 		// Create a new collage item element
+	// 		const collageItem = document.createElement("div");
+	// 		collageItem.className = "collage-item";
+	// 		collageItem.style.position = "absolute"; // Ensure positioning works
 
-			// Create the image element
-			const img = document.createElement("img");
-			img.src = imageItem.src;
-			img.alt = `Image ${currentIndex + 1}`;
-			img.style.width = "200px"; // Ensure width is set
-			img.style.height = "200px"; // Ensure height is set
+	// 		// Create the image element
+	// 		const img = document.createElement("img");
+	// 		img.src = imageItem.src;
+	// 		img.alt = `Image ${currentIndex + 1}`;
+	// 		img.style.width = "200px"; // Ensure width is set
+	// 		img.style.height = "200px"; // Ensure height is set
 
-			collageItem.appendChild(img);
+	// 		collageItem.appendChild(img);
 
-			// Find a valid, non-overlapping position
-			const pos = findNonCollidingPosition(200, 200);
-			if (pos) {
-				collageItem.style.left = `${pos.left}px`;
-				collageItem.style.top = `${pos.top}px`;
+	// 		// Find a valid, non-overlapping position
+	// 		const pos = findNonCollidingPosition(200, 200);
+	// 		if (pos) {
+	// 			collageItem.style.left = `${pos.left}px`;
+	// 			collageItem.style.top = `${pos.top}px`;
 
-				// Store this position to avoid future overlaps
-				placedImages.push({
-					left: pos.left,
-					top: pos.top,
-					right: pos.left + 200,
-					bottom: pos.top + 200,
-				});
+	// 			// Store this position to avoid future overlaps
+	// 			placedImages.push({
+	// 				left: pos.left,
+	// 				top: pos.top,
+	// 				right: pos.left + 200,
+	// 				bottom: pos.top + 200,
+	// 			});
 
-				// Append the collage item to the container
-				collageContainer.appendChild(collageItem);
-				currentIndex++;
-			} else {
-				console.warn("No available space for more images.");
-				clearInterval(autoAddInterval);
-			}
-		} else {
-			clearInterval(autoAddInterval);
-		}
-	}
+	// 			// Append the collage item to the container
+	// 			collageContainer.appendChild(collageItem);
+	// 			currentIndex++;
+	// 		} else {
+	// 			console.warn("No available space for more images.");
+	// 			clearInterval(autoAddInterval);
+	// 		}
+	// 	} else {
+	// 		clearInterval(autoAddInterval);
+	// 	}
+	// }
 	function toggleLoop(typed) {
 		if (typed.loop) {
 			typed.loop = false;
@@ -490,6 +493,21 @@ $('document').ready(function () {
 	}
 	function prettyLog(str) {
 		console.log('%c ' + str, 'color: green; font-weight: bold;');
+	}
+	function addImageToCollage() { 
+		// Loop through the image URLs and create a div for each image
+		const container = document.getElementById('img-container');
+		images.forEach((imageUrl, currentIndex) => {
+			const img = document.createElement("img");
+			img.src = imageUrl.src;
+			img.alt = `Image ${currentIndex + 1}`;
+			img.style.width = "200px"; // Ensure width is set
+			img.style.height = "200px"; // Ensure height is set
+			const div = document.createElement('div');
+			div.className = 'square';
+			div.appendChild(img);
+			container.appendChild(div);
+		});
 	}
 });
 
